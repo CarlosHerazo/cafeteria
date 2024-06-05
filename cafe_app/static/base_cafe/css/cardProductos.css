@@ -1,0 +1,247 @@
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+/*SELECT*/
+
+/* Estilos para el select */
+/* Contenedor para centrar los elementos */
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+    padding: 20px;
+}
+
+/* Estilos para el select */
+select {
+    width: 200px;
+    padding: 10px;
+    border: 2px solid #00AF00;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 16px;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select:focus {
+    border-color: #218838;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+select option:first-child {
+    color: #ccc;
+    /* Cambia el color del texto de la primera opción */
+}
+
+/* Estilos para el botón */
+/* button {
+    width: 150px;
+    padding: 10px 20px;
+    background-color: #00AF00;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+} */
+
+/* button:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    background-color: #1e7e34;
+} */
+
+
+/* Estilos para el botón */
+.agregar-producto,
+.congelar-producto {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #00AF00;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.congelar-producto {
+    background-color: rgb(163, 13, 17, 0.7);
+    cursor: auto;
+}
+
+
+.agregar-producto:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/*card*/
+.card {
+    display: flex;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 20px);
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.image-left {
+    width: 30%;
+
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.image-left img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+}
+
+.btn {
+    background-color: #f8f8f8;
+    color: #00AF00;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #e0e0e0;
+    border: 2px solid #00AF00;
+}
+
+.counter {
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 20px;
+    width: 50%;
+    text-align: center;
+    padding: 5px 10px;
+    border: 2px solid #e0e0e0;
+    background-color: #f8f8f8;
+}
+
+.info-raight {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.cantidad-product-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+}
+
+.cantidad-product {
+    display: flex;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #00AF00;
+}
+
+.header-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-product {
+    font-size: 30px;
+    margin-right: 20px;
+    color: #000;
+    font-weight: 800;
+
+}
+
+.valor {
+    font-size: 20px;
+    font-weight: 700;
+    color: #00AF00;
+}
+
+.body-card {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.agregar-producto {
+    padding: 10px 20px;
+    background-color: #00AF00;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.agregar-producto:hover {
+    background-color: #218838;
+}
+
+.descripcion-product {
+    flex-grow: 1;
+    margin: 20px 0;
+    color: #000;
+    font-weight: 300;
+}
+
+.graficas {
+    display: flex;
+    /* Utilizamos Flexbox para alinear los elementos */
+}
+
+.chart-container {
+    flex: 1;
+    /* Hace que los elementos ocupen el mismo ancho */
+    height: 40vh;
+    /* Establece la altura deseada */
+    margin-right: 10px;
+    /* Espacio entre los gráficos */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ 
+}

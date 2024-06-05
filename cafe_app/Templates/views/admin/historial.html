@@ -1,0 +1,121 @@
+{% extends 'base/base.html' %}
+
+{% block content_slidebar %}
+  {% include 'menu/menu_admin.html' %}
+  {% block menu_admin %}
+
+  {% endblock %}
+{% endblock %}
+
+{% block titulo %}
+  Historial
+{% endblock %}
+
+{% block content_main %}
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <br />
+  <table id="historial" border>
+    <div class="flex_end">
+      {% comment %} <a class="btn_agregar" id="generarFactura" href="{% url 'generarFactura' %}?formato=pdf" target="_blank">Imprimir Factura (PDF)</a>
+      <a class="btn_agregar" href="{% url 'generarFactura' %}?formato=excel">Descargar Factura (Excel)</a> {% endcomment %}
+      <lord-icon src="https://cdn.lordicon.com/yqiuuheo.json" trigger="hover" colors="primary:#ffffff,secondary:#c71f16" style="width:50px;height:50px" id="generarFacturaPdf" data-formato="pdf" target="_blank"></lord-icon>
+      <lord-icon src="https://cdn.lordicon.com/yqiuuheo.json" trigger="hover" colors="primary:#ffffff,secondary:#109121" style="width:50px;height:50px" id="generarFacturaExcel" data-formato="excel" ></lord-icon>
+    </div>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Producto</th>
+        <th>Id de compra</th>
+        <th>Cantidad</th>
+        <th>Precio unitario</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for detalle in detalles_venta %}
+        <tr>
+          <td>{{ detalle.venta.fecha|date:'Y-m-d' }}</td>
+          <td>{{ detalle.venta.fecha|time:'H:i:s' }}</td>
+          <td>{{ detalle.producto.nombre }}</td>
+          <td>{{ detalle.venta.id }}</td>
+          <td>{{ detalle.cantidad }}</td>
+          <td>{{ detalle.producto.precio }}</td>
+          <td>{{ detalle.total }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    document.getElementById('generarFacturaPdf').addEventListener('click', function () {
+      generarFactura('pdf')
+    })
+    
+    document.getElementById('generarFacturaExcel').addEventListener('click', function () {
+      generarFactura('excel')
+    })
+    
+    function generarFactura(formato) {
+      // Extraer datos de la tabla
+      const table = document.getElementById('historial')
+      const rows = table.querySelectorAll('tbody tr')
+      const data = []
+    
+      rows.forEach((row) => {
+        const cells = row.querySelectorAll('td')
+        const rowData = {
+          fecha: cells[0].textContent,
+          hora: cells[1].textContent,
+          producto: cells[2].textContent,
+          idCompra: cells[3].textContent,
+          cantidad: cells[4].textContent,
+          precioUnitario: cells[5].textContent,
+          total: cells[6].textContent
+        }
+        data.push(rowData)
+      })
+    
+      // Enviar datos al backend
+      fetch(`http://127.0.0.1:8000/admin_cafe/generarFactura/?formato=${formato}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+      })
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.style.display = 'none'
+          a.href = url
+          if (formato === 'pdf') {
+            a.download = 'factura.pdf'
+          } else {
+            a.download = 'factura.xlsx'
+          }
+          document.body.appendChild(a)
+          a.click()
+          window.URL.revokeObjectURL(url)
+        })
+        .catch((error) => console.error('Error:', error))
+    }
+    
+    // Obtener el valor del token CSRF
+    function getCookie(name) {
+      let cookieValue = null
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';')
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim()
+          if (cookie.substring(0, name.length + 1) === name + '=') {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+            break
+          }
+        }
+      }
+      return cookieValue
+    }
+  </script>
+{% endblock %}

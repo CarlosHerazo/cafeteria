@@ -1,0 +1,110 @@
+.form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 50px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 20px;
+  color: #00AF00;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select,
+.input2 {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+
+
+.form-group .info-message {
+  color: #00AF00;
+  font-weight: bold;
+  margin-top: 0.25rem;
+  font-size: 20px;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.valores {
+  color: #000;
+  font-weight: 400;
+}
+
+textarea {
+  width: auto;
+  height: 50px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  resize: vertical;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+select:focus {
+  border: 2px solid #039E39;
+  outline: none;
+}
+
+textarea:focus {
+  border: 2px solid #039E39;
+}
+
+input:focus {
+  border: 2px solid #039E39;
+}
+
+
+.form .guardar-productos {
+  background-color: #039E39;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 90%;
+}
+
+.form .guardar-productos:hover {
+  background-color: #195e31;
+}
+
+.main-container {
+  margin-top: 60px;
+  display: grid;
+  gap: 10rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+
+.container-button {
+  display: flex;
+  justify-content: end;
+}
+
+#checkout-button {
+  background-color: #00AF00;
+  padding: 20px 20px;
+  border-radius: 20px;
+  color: #fff;
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+}

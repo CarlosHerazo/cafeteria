@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="plataforma de gestión de operador. Herramientas avanzadas y análisis detallados para optimizar tus procesos. Gestión de operador, eficiencia operativa, análisis de rendimiento, herramientas de gestión, productividad empresarial.">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{%static 'base_cafe/css/style.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'base_cafe/css/cardProductos.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'base_cafe/css/formulario.css'%}"> 
+    <link rel="stylesheet" type="text/css" href="{%static 'base_cafe/css/table.css'%}"> 
+    <!--cdn-link-dataTables-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+    <!--iconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--link font-mamily-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+    <title>SenaCoffe</title>
+</head>
+
+<body>
+    <div>
+        <header class="header">
+            <div class="logo">
+                <h1 class="title"><span class="seccion-title">Sena</span>Coffe</h1>
+                
+            </div>
+            <div class="user">
+                <div class="user-name">
+                    
+                    
+                    <div class="name">
+                        <p>{{usuario}}/</span>{{rol}}</p>
+                    </div>
+                </div>
+                <div class="line">
+                </div>
+            </div>
+        </header>
+        <div class="content-todo">
+
+            <!--Slaider segun el rol-->
+           {% block content_slidebar %}
+           
+           {% endblock %}
+            
+
+           <main class="main-content-rigth">
+                <div class="content-title">
+                    <p class="title">{% block titulo %}{% endblock  %}</p>
+                </div>
+    
+            {% block content_main %}
+           
+            {% endblock %}
+    
+            
+        </main>
+        
+    </div>
+    <footer>
+        <p>Sena regional Bolivar</p>
+        <img src="{%static 'base_cafe/img/logo_sena.png'%}" alt="logo_sena">
+    </footer> 
+ <!-- Agrega la librería de jQuery -->
+ <!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+ {% comment %} <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> {% endcomment %}
+ <!-- Incluye SweetAlert 2 desde la CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+ <!-- Agrega la librería de DataTables -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-qFOQ9YFAeGj1gDOuUD61g3D+tLDv3u1ECYWqT82WQoaWrOhAY+5mRMTTVsQdWutbA5FORCnkEPEgU0OF8IzGvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script type="module" src="{%static 'base_cafe/js/datatable.js'%}"></script>
+    <script type="module" src="{%static 'base_cafe/js/modal.js'%}"></script>
+    <script type="module" src="{%static 'base_cafe/js/sweetalert.js'%}"></script>
+    <script type="module" src="{%static 'base_cafe/js/filter.js'%}"></script>
+    <script type="module" src="{%static 'base_cafe/js/session_car.js'%}"></script>
+    <script type="module" src="{%static 'base_cafe/js/action_botones.js'%}"></script>
+    <script type="module" src="{%static 'base_cafe/js/carrito.js'%}"></script>
+    <script type="module" src="{%static 'base_cafe/js/realizar_pedido.js'%}"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.bootstrap5.js"></script>
+</body>
+
+</html>

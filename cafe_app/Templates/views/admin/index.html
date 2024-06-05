@@ -1,0 +1,149 @@
+{% extends 'base/base.html' %}
+
+{% block content_slidebar %}
+  {% include 'menu/menu_admin.html' %}
+  {% block menu_admin %}
+
+  {% endblock %}
+{% endblock %}
+
+{% block titulo %}
+  Inicio
+{% endblock %}
+
+{% block content_main %}
+  <div class="main-content">
+    <div class="card--content">
+      <div class="card--wrapper">
+        <a class="card--one" href="{% url 'admin_productos' %}">
+          <div class="card--header">
+            <div class="ammount">
+              <span class="title">
+                <i class="fas fa-cart-shopping"></i>
+                <span class="value">{{ cantidad_productos }}</span>
+              </span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Productos</p>
+          </div>
+        </a>
+        <!-- Fin card -->
+        <a class="card--one" href="{% url 'admin_historial' %}">
+          <div class="card--header">
+            <div class="ammount">
+              <span class="title">
+                <i class="fas fa-dollar-sign"></i>
+                <span class="value">{{ total_ventas_semana }}</span>
+              </span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Venta semanal</p>
+          </div>
+        </a>
+        <!-- Fin card -->
+      </div>
+    </div>
+
+    <!-- GRAFICAS -->
+    <div class="graficas">
+      <!-- Gráfico de Productos por Categoría -->
+      <div class="chart-container" style="position: relative; height:40vh; with">
+        <canvas id="productosPorCategoriaChart"></canvas>
+      </div>
+
+      <!-- Gráfico de Ventas por Día de la Semana -->
+      <div class="chart-container" style="position: relative; height:40vh;">
+        <canvas id="ventasPorDiaChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agrega Chart.js desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Gráfico de Productos por Categoría
+    var ctx1 = document.getElementById('productosPorCategoriaChart').getContext('2d');
+    var productosPorCategoriaChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: {{ categorias|safe }},
+            datasets: [{
+                label: 'Cantidad de Productos',
+                data: {{ cantidad_productos_por_categoria|safe }},
+                backgroundColor: 'rgba(0, 175, 0, 0.2)',
+                borderColor: 'rgba(0, 175, 0, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    window.onload = function() {
+      // Obtener la fecha actual
+      var today = new Date();
+      
+      // Obtener el número de la semana actual y el mes actual
+      var weekInfo = getWeekNumber(today);
+      var weekNumber = weekInfo.week;
+      var monthName = weekInfo.monthName;
+      
+      // Colocar la etiqueta con el número de la semana y el mes
+      var weekLabel = `Ventas Totales de la semana ${weekNumber} de ${monthName}.`;
+      
+      // Obtener el contexto del canvas del gráfico
+      var ctx2 = document.getElementById('ventasPorDiaChart').getContext('2d');
+      
+      // Crear el gráfico de ventas por día de la semana
+      var ventasPorDiaChart = new Chart(ctx2, {
+          type: 'line',
+          data: {
+              labels: {{ dias_semana|safe }},
+              datasets: [{
+                  label: weekLabel,
+                  data: {{ ventas_diarias|safe }},
+                  backgroundColor: 'rgba(0, 175, 0, 0.2)',
+                  borderColor: 'rgba(0, 175, 0, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+  };
+  
+  // Función para obtener el número de la semana (lunes a viernes) y el nombre del mes de una fecha dada
+  function getWeekNumber(date) {
+    var dayOfMonth = date.getDate(); // 1 a 31
+    var month = date.getMonth(); // 0 (enero) a 11 (diciembre)
+    var year = date.getFullYear();
+    
+    // Obtener el primer día del mes
+    var firstDayOfMonth = new Date(year, month, 1);
+    var dayOfWeek = firstDayOfMonth.getDay(); // 0 (domingo) a 6 (sábado)
+    
+      // Calcular el número de la semana relativo al mes (lunes a viernes)
+    var weekNumber = Math.ceil((dayOfMonth + dayOfWeek) / 7);
+      
+      // Obtener el nombre del mes
+      var monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+      var monthName = monthNames[month];
+      
+      return { week: weekNumber, monthName: monthName };
+  }
+  
+</script>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'base/base.html' %}
+
+{% block content_slidebar %}
+  {% include 'menu/menu_admin.html' %}
+  {% block menu_admin %}
+
+  {% endblock %}
+{% endblock %}
+
+{% block titulo %}
+  Pago
+{% endblock %}
+
+{% block content_main %}
+  <div class="main-content">
+    <table id="cart-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Nombre</th>
+          <th>Unidades</th>
+          <th>Precio Unitario</th>
+          <th>Subtotal</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody id="cart-items">
+        <!-- Aquí se mostrarán los productos agregados al carrito -->
+      </tbody>
+    </table>
+
+    <div class="header-total">
+      <div class="descuento">
+        <div class="form-group">
+          <label for="tipo-descuento">Descuento</label>
+          <select name="tipo-descuento" id="tipo-descuento">
+            <option value="0">---------</option>
+            {% for descuento in descuentos %}
+              <option value="{{ descuento.desc }}">{{ descuento.tipo_descuento }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div id="cart-total" class="">
+        <!-- Aquí se mostrará el total del carrito -->
+        Total: $0.00
+      </div>
+    </div>
+    <div class="main-container">
+      <div>
+        <div class="form-group flex">
+          <p class="info-message">Total sin descuento:</p>
+          <span class="valores" id="sinDescuento">0.00</span>
+        </div>
+        <div class="form-group flex">
+          <p class="info-message">Descuento:</p>
+          <span class="valores" id="descuento">0.00</span>
+        </div>
+        <div class="form-group flex">
+          <p class="info-message">TOTAL A PAGAR:</p>
+          <span class="valores" id="totalPagar">0.00</span>
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label for="valor_recibido">Valor recibido</label>
+          <input type="number" id="valor_recibido" class="input2" value="0" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="cambio">Cambio</label>
+          <input type="text" id="cambio" class="input2" disabled />
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="container-button">
+      <button id="checkout-button">Realizar Pedido</button>
+    </div>
+
+    <script>
+      // Incremento y decremento de la cantidad de productos
+      function increment(productId, cantidadMaxima) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || []
+        const productIndex = cart.findIndex((producto) => producto.id == productId)
+      
+        if (productIndex !== -1 && parseInt(cart[productIndex].cantidad) < parseInt(cantidadMaxima)) {
+          cart[productIndex].cantidad++
+          localStorage.setItem('cart', JSON.stringify(cart))
+          document.getElementById('counter_' + productId).textContent = `${cart[productIndex].cantidad}`
+          actualizarSubtotalYTotal(cart)
+        }
+      }
+      
+      function decrement(productId) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || []
+        const productIndex = cart.findIndex((producto) => producto.id == productId)
+      
+        if (productIndex !== -1 && cart[productIndex].cantidad > 1) {
+          cart[productIndex].cantidad--
+          localStorage.setItem('cart', JSON.stringify(cart))
+          document.getElementById('counter_' + productId).textContent = `${cart[productIndex].cantidad}`
+          actualizarSubtotalYTotal(cart)
+        }
+      }
+      
+      // Función para actualizar el subtotal y el total
+      function actualizarSubtotalYTotal(cart) {
+        let subtotal = 0
+        cart.forEach((producto) => {
+          subtotal += parseFloat(producto.cantidad) * parseFloat(producto.precio)
+          const subtotalElement = document.querySelector(`#cart-items .sub[data-id="${producto.id}"]`)
+          if (subtotalElement) {
+            subtotalElement.textContent = `$${(parseFloat(producto.cantidad) * parseFloat(producto.precio)).toFixed(2)}`
+          }
+        })
+        document.getElementById('cart-total').textContent = `Total: $${formatNumber(subtotal.toFixed(2))}`
+        calcularYActualizarValores()
+      }
+      
+      // Escuchar cambios en el localStorage para sincronizar entre pestañas
+      window.addEventListener('storage', function (event) {
+        if (event.key === 'cart') {
+          mostrarProductosEnCarrito()
+        }
+      })
+      
+      function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      }
+    </script>
+  </div>
+{% endblock %}

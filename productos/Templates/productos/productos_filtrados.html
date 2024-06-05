@@ -1,0 +1,37 @@
+<div class="content" id="filtered-products">
+  {% load static %}
+  {% for producto in productos %}
+    <div class="card">
+      <div class="image-left">
+        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" />
+      </div>
+      <div class="info-raight">
+        <div class="header-card">
+          <h2 class="title-product">{{ producto.nombre }}</h2>
+          <span class="valor">{{ producto.precio_formateado }}</span>
+        </div>
+        <div class="body-card">
+          <div class="descripcion-product">{{ producto.descripcion }}</div>
+          <div class="cantidad-product">
+            <span class="cantidad-product-title">Cantidad:</span>{{ producto.cantidad }}
+          </div>
+          <div class="counter-container">
+            <button class="btn decrement" onclick="decrement({{ producto.id }})">-</button>
+            <span class="counter" id="counter_{{ producto.id }}">1</span>
+            <button class="btn increment" id="increment_{{ producto.id }}" onclick="increment({{ producto.id }}, {{ producto.cantidad }})">+</button>
+          </div>
+          <div class="boton-a">
+  
+            {% if producto.cantidad > 0 %}
+              <button class="agregar-producto" data-id="{{ producto.id }}" data-nombre="{{ producto.nombre }}" data-precio="{{ producto.precio }}" data-imagen="{{ producto.imagen.url }}" data-cantidadMaxima={{producto.cantidad}}>Agregar Al carrito</button>
+            {% else %}
+              <button class="congelar-producto" disabled>Agotado</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+
+</div>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Factura</title>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      th {
+        background-color: #f2f2f2;
+        text-align: left;
+        color: #555;
+      }
+      
+      tbody tr:hover {
+        background-color: #f9f9f9;
+      }
+      
+      #totalCompra,
+      #totalDescuento {
+        text-align: right;
+        margin-top: 20px;
+        color: #333;
+      }
+      
+      #totalCompra span,
+      #totalDescuento span {
+        color: #007bff;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h2>Factura</h2>
+    <h1>
+      Cafeteria Casa del Marquez
+    </h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Producto</th>
+          <th>Id de compra</th>
+          <th>Cantidad</th>
+          <th>Precio unitario</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data %}
+          <tr>
+            <td>{{ item.fecha }}</td>
+            <td>{{ item.hora }}</td>
+            <td>{{ item.producto }}</td>
+            <td>{{ item.idCompra }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.precioUnitario }}</td>
+            <td>{{ item.total }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h1 id="totalCompra">Total de la compra $ <span>{{ total_compra }}</span></h1>
+    <h1 id="totalDescuento">Descuento Aplicado $ <span>{{ descuento }}</span></h1>
+  </body>
+</html>
