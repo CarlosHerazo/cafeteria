@@ -1,0 +1,61 @@
+{% block menu_empleado %}
+  <div class="sidebar">
+    <div class="main-sliderbar">
+      <ul class="main-menu">
+        <h4>MENÚ</h4>
+        <li>
+          <a href=" {% url 'index' %} ">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li>
+          <a href=" {% url 'admin_productos' %} ">
+            <i class="fas fa-mug-hot"></i>
+            <span>Productos</span>
+          </a>
+        </li>
+        <li>
+          <a href=" {% url 'admin_inventarios' %}">
+            <i class="fas fa-file-lines"></i>
+            <span>Inventarios</span>
+          </a>
+        </li>
+        <li>
+          <a href=" {% url 'admin_historial' %}">
+            <i class="fas fa-file-contract"></i>
+            <span>Historial</span>
+          </a>
+        </li>
+        <li>
+          <a href=" {% url 'admin_carrito' %}">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Carrito</span>
+          </a>
+        </li>
+       
+      </ul>
+      <ul class="main-otros">
+        <h4>OTROS</h4>
+        <li>
+          <a href="{% url 'admin_configuracion' %}">
+            <i class="fas fa-gear"></i>
+            <span>Configuración</span>
+          </a>
+        </li>
+        {% comment %} <li>
+          <a href="{% url 'admin_empleados' %}">
+            <i class="fas fa-users-line"></i>
+            <span>Empleados</span>
+          </a>
+        </li> {% endcomment %}
+        <li>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Salir</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

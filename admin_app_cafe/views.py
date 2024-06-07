@@ -214,14 +214,18 @@ def generar_excel(data):
     response = HttpResponse(output, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename="factura.xlsx"'
     return response
+
+    
 def empleados(request):
     usuario_data = request.session.get('usuario')
     if usuario_data:
         usuario = usuario_data['usuario']
         rol_ = usuario_data['rol']
 
+        # Obtener todos los empleados
+        empleados = Empleado.objects.all()
+
         if request.method == 'POST':
-            # Detectar si estamos en modo de actualización o creación
             empleado_id = request.POST.get('empleado_id', "")
             if empleado_id:
                 empleado = get_object_or_404(Empleado, pk=empleado_id)
@@ -230,19 +234,17 @@ def empleados(request):
                 form = EmpleadoUsuarioForm(request.POST)
 
             if form.is_valid():
-                # Guardar el formulario y manejar relaciones
                 form.save()
                 return redirect('admin_inventarios')
         else:
-            # Si es GET, preparar el formulario vacío
             form = EmpleadoUsuarioForm()
 
         context = {
             "usuario": usuario,
             "rol": rol_,
-            "form": form  # Pasar el formulario al contexto para el uso en la plantilla
+            "form": form,
+            "empleados": empleados  # Pasar la lista de empleados al contexto
         }
         return render(request, "views/admin/empleados.html", context)
     else:
-        # Si no hay datos de usuario en la sesión, redirigir al login
         return redirect('login')

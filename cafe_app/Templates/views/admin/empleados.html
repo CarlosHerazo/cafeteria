@@ -1,11 +1,13 @@
 {% extends 'base/base.html' %}
 
-{% block content_slidebar %}
-  {% include 'menu/menu_admin.html' %}
-  {% block menu_admin %}
-
-  {% endblock %}
-{% endblock %}
+{% block  content_slidebar%}
+    {% if rol %}
+        {% if rol == 'admin' %}
+            {% include 'menu/menu_admin.html' %}         
+            {% block  menu_admin%}{% endblock%}  
+            {% endif %}      
+    {% endif %}
+{% endblock %} 
 
 {% block titulo %}
   Empleados
