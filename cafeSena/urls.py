@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from login_cafe import views
+from cafe_app.views import cerrar_sesion
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('confirm_login/',include('login_cafe.urls')),  
     path('admin_cafe/',include('admin_app_cafe.urls')),  
     path('inicio/',views.inicio), 
+    path('cerrar-sesion/',cerrar_sesion, name='cerrar_sesion'),
 ]

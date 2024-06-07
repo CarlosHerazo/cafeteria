@@ -4,51 +4,39 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para abrir el modal y llenar los campos del formulario
     function abrirModal(data) {
         // Abre el modal
-        const modal = document.getElementById('miModal');
+        const modal = document.getElementById('categoriaModal');
         modal.style.display = 'block';
-
         // Llenar los campos del formulario con los datos obtenidos
-        document.querySelector('input[name="producto_id"]').value = data.id;
         document.querySelector('input[name="nombre"]').value = data.nombre;
-        document.querySelector('input[name="precio"]').value = data.precio;
-        document.querySelector('textarea[name="descripcion"]').value = data.descripcion;
-        // document.querySelector('input[name="imagen"]').value = data.imagen; 
-        document.querySelector('input[name="cantidad"]').value = String(data.cantidad);
-        document.querySelector('select[name="cafeteria"]').value = String(data.cafeteria);
-        document.querySelector('select[name="categoria"]').value = String(data.categoria);
-        document.querySelector('h2[id="titulo_modal"]').textContent = "Actualizar Producto";
-        document.querySelector('button[class="btn-actualizar"]').textContent = "Actualizar Producto";
+        document.querySelector('input[name="categoria_id"]').value = data.id;
+        document.querySelector('h2[id="titulo_modal_categoria"]').textContent = "Actualizar Categoria";
+        document.querySelector('.btn-actualizar').textContent = "Actualizar Categoria";  
 
-         // Mostrar la imagen actual y llenar el campo oculto con la URL
-        const imagenActual = document.getElementById('imagen_actual');
-        const imagenActualUrl = document.getElementById('imagen_actual_url');
-        imagenActual.src = data.imagen;
-        imagenActualUrl.value = data.imagen;
-   
-        
     }
-    // Mostrar previsualización de la imagen
+
 
 
     // Cerrar el modal al hacer clic en el botón "Cancelar"
     document.getElementById('cerrarModal').addEventListener('click', function () {
-        const modal = document.getElementById('miModal');
+        const modal = document.getElementById('categoriaModal');
         modal.style.display = 'none';
+        document.querySelector('h2[id="titulo_modal"]').textContent = "Nueva Categoria";
+        document.querySelector('button[class="btn-actualizarCategoria"]').textContent = "Actualizar Categoria";  
     });
 
-    // Obtener todos los elementos con la clase 'actualizar_producto'
-    var elementos = document.querySelectorAll('.actualizar_producto');
-
+    // Obtener todos los elementos con la clase 'actualizar_categoria'
+    var elementos = document.querySelectorAll('.actualizar_categoria');
+    console.log(elementos)
     // Iterar sobre los elementos encontrados
     elementos.forEach(function (elemento) {
         // Agregar un event listener para el evento 'click' a cada elemento
         elemento.addEventListener('click', function () {
             // Obtener el valor del atributo 'data-id' del elemento clickeado
-            var id = this.getAttribute('data-id');
+            var id = this.getAttribute('data-categoriaId');
             console.log(id);
 
             // Realizar la solicitud fetch
-            fetch("http://127.0.0.1:8000/productos/buscar_producto/" + id, {
+            fetch("http://127.0.0.1:8000/productos/buscar_categoria/" + id, {
                 method: 'GET', // Método HTTP
                 headers: {
                     'Content-Type': 'application/json', // Tipo de contenido
@@ -76,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
    // Manejo del formulario de eliminación para cada formulario presente en la página
-const formsEliminar = document.querySelectorAll('.form_eliminar');
+const formsEliminar = document.querySelectorAll('.form_eliminar_categoria');
 
 formsEliminar.forEach((form) => {
     form.addEventListener('submit', function (event) {
@@ -85,13 +73,15 @@ formsEliminar.forEach((form) => {
         // Muestra un SweetAlert de confirmación
         Swal.fire({
             title: "¿Estás seguro?",
-            text: "Se eliminará un producto",
+            text: "Se eliminará una categoria",
             icon: "warning",
-            buttons: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, Elimiar",
             dangerMode: true,
-        })
-        .then((willSubmit) => {
-            if (willSubmit) {
+        }).then((result) => {
+            if (result.isConfirmed) {
                 // Si el usuario confirma, envía el formulario
                 Swal.fire("Producto eliminado!", {
                     icon: "success",

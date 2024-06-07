@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from cafe_app.models import Producto, Categoria, Venta, DetalleVenta
+from cafe_app.models import Producto, Categoria, Venta, DetalleVenta, Descuento
 from django.db.models import F
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
@@ -36,20 +36,16 @@ def nuevo_producto(request):
     return render(request, 'productos/inventarios.html', {"usuario": nombre, "rol": rol_,'form': form,"productos":productos})
 
 def eliminar_producto(request, producto_id):
-    usuario_data = request.session.get('usuario')
-    if usuario_data:
-        nombre = usuario_data['usuario']
-        rol_ = usuario_data['rol']
-    producto = get_object_or_404(Producto, pk=producto_id)
-    producto.delete()
-    productos = Producto.objects.all()  # Esto obtiene todos los productos de la base de datos
-    return redirect('admin_inventarios')
+
+    if request.method == 'POST':
+        producto = get_object_or_404(Producto, pk=producto_id)
+        producto.delete()
+
+        return redirect('admin_inventarios')
 
 
 def buscar_producto(request, producto_id):
-    # Obtener el ID del producto de la solicitud
-    producto_id = producto_id
-    
+ 
     # Buscar el producto en la base de datos
     try:
         producto = Producto.objects.get(id=producto_id)
@@ -211,3 +207,65 @@ def realizar_pedido(request):
         return JsonResponse({'message': 'Pedido realizado exitosamente'})
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+
+# actualizar categoria
+
+def buscar_categoria(request, categoria_id):
+    if request.method == "GET":
+        # Buscar el producto en la base de datos
+        try:
+            categoria = Categoria.objects.get(id=categoria_id)
+            # Crear un diccionario con los datos del producto
+            categoria_data = {
+                'id': categoria.id,
+                'nombre': categoria.nombre,
+            
+            }
+            # Devolver la respuesta JSON con los datos del producto
+            return JsonResponse(categoria_data)
+        except Producto.DoesNotExist:
+            # Si el producto no existe, devolver un JSON con un mensaje de error
+            return JsonResponse({'error': 'La categoria no existe'}, status=404)
+
+
+# actualizar los descuentos
+
+def buscar_descuento(request, descuento_id):
+    # Buscar el descuento en la base de datos
+    if request.method == "GET":
+        try:
+            descuento = Descuento.objects.get(id=descuento_id)
+            # Crear un diccionario con los datos del descuento
+            descuento_data = {
+                'id': descuento.id,
+                'tipo_descuento': descuento.tipo_descuento,
+                'descuento': descuento.desc,
+            
+            }
+            # Devolver la respuesta JSON con los datos del descuento
+            return JsonResponse(descuento_data)
+        except Producto.DoesNotExist:
+            # Si el descuento no existe, devolver un JSON con un mensaje de error
+            return JsonResponse({'error': 'El descuento no existe'}, status=404)
+
+def eliminar_categoria(request, categoria_id):
+    # Verificar que la solicitud sea POST
+    if request.method == 'POST':
+        categoria = get_object_or_404(Categoria, pk=categoria_id)
+        categoria.delete()
+        
+        return redirect('admin_configuracion')
+    else:
+        return redirect('admin_configuracion')
+
+def eliminar_descuento(request, descuento_id):
+    # Verificar que la solicitud sea POST
+    if request.method == 'POST':
+        descuento = get_object_or_404(Descuento, pk=descuento_id)
+        descuento.delete()
+        
+        return redirect('admin_configuracion')
+    else:
+        return redirect('admin_configuracion')

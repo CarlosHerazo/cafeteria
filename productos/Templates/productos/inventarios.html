@@ -17,65 +17,60 @@
     <button id="abrirModal" class="btn_agregar"><i class="fas fa-plus"></i> Nuevo Producto</button>
 
     <!-- Modal de agregar o actualizar -->
-   <!-- Modal -->
-<!-- Modal -->
-<div id="miModal" class="modal">
-  <!-- Contenido del modal -->
-  <div class="modal-content">
-      <div class="modal-header">
+    <!-- Modal -->
+    <!-- Modal -->
+    <div id="miModal" class="modal">
+      <!-- Contenido del modal -->
+      <div class="modal-content">
+        <div class="modal-header">
           <h2 id="titulo_modal">Nuevo Producto</h2>
-      </div>
-      <div class="modal-body">
-          <form class="form" method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="form-group">
-                  <label for="id_nombre">Nombre</label>
-                  {{ form.nombre }}
-                  <input type="hidden" name="producto_id" value="">
-              </div>
-              <div class="form-group">
-                  <label for="id_precio">Precio</label>
-                  {{ form.precio }}
-              </div>
-              <div class="form-group">
-                  <label for="id_descripcion">Descripción</label>
-                  {{ form.descripcion }}
-              </div>
-              <div class="form-group">
-                  <label for="id_imagen">Imagen</label>
-                  {{ form.imagen }}
-                  <img id="imagen_actual" src="" alt="Imagen actual" style="max-width: 100px; max-height: 100px;" />
-                <input type="hidden" id="imagen_actual_url" name="imagen_actual_url" value="">
-              </div>
-              <div class="form-group">
-                  <label for="id_cantidad">Cantidad</label>
-                  {{ form.cantidad }}
-              </div>
-              <div class="form-group">
-                  <label for="id_cafeteria">Cafetería</label>
-                  {{ form.cafeteria }}
-              </div>
-              <div class="form-group">
-                  <label for="id_categoria">Categoría</label>
-                  {{ form.categoria }}
-              </div>
-              <div class="form-group">
-                <label for="">Acciones</label>
-                <div>
-                  <button type="button" id="cerrarModal" class="btn-cerrar">Cancelar</button>
+        </div>
+        <div class="modal-body">
+          <form class="form" id="formProducto" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="id_nombre">Nombre</label>
+              {{ form.nombre }}
+              <input type="hidden" name="producto_id" value="" />
+            </div>
+            <div class="form-group">
+              <label for="id_precio">Precio</label>
+              {{ form.precio }}
+            </div>
+            <div class="form-group">
+              <label for="id_descripcion">Descripción</label>
+              {{ form.descripcion }}
+            </div>
+            <div class="form-group">
+              <label for="id_imagen">Imagen</label>
+              {{ form.imagen }}
+              <img id="imagen_actual" src="" alt="Imagen actual" style="max-width: 100px; max-height: 100px;" />
+              <input type="hidden" id="imagen_actual_url" name="imagen_actual_url" value="" />
+            </div>
+            <div class="form-group">
+              <label for="id_cantidad">Cantidad</label>
+              {{ form.cantidad }}
+            </div>
+            <div class="form-group">
+              <label for="id_cafeteria">Cafetería</label>
+              {{ form.cafeteria }}
+            </div>
+            <div class="form-group">
+              <label for="id_categoria">Categoría</label>
+              {{ form.categoria }}
+            </div>
+            <div class="form-group">
+              <label for="">Acciones</label>
+              <div>
+                <button type="button" id="cerrarModal" class="btn-cerrar">Cancelar</button>
                 <button type="submit" class="btn-actualizar">Guardar Producto</button>
-                </div>
               </div>
-              
+            </div>
           </form>
-
+        </div>
+        <div class="modal-footer"></div>
       </div>
-      <div class="modal-footer">
-                 
-      </div>
-  </div>
-</div>
-
+    </div>
 
     <!-- Tabla de productos -->
     <div class="">
@@ -95,7 +90,9 @@
           {% for producto in productos %}
             <tr>
               <td>{{ producto.id }}</td>
-              <td><img src="{{ producto.imagen.url }}" alt="" class="img-pequena" /></td>
+              <td>
+                <img src="{{ producto.imagen.url }}" alt="" class="img-pequena" />
+              </td>
               <td>{{ producto.nombre }}</td>
               <td>{{ producto.cantidad }}</td>
               <td>{{ producto.precio }}</td>
@@ -112,7 +109,7 @@
                 <div class="iconos-accion">
                   <!-- Enlace para editar -->
                   <li class="fas fa-pen-to-square actualizar_producto" data-id="{{ producto.id }}"></li>
-                  <!-- Formulario para eliminar --> 
+                  <!-- Formulario para eliminar -->
                   <form class="form_eliminar" action="{% url 'eliminar_producto' producto.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="fas fa-trash-can"></button>

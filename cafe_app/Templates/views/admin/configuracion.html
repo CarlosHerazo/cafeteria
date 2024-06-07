@@ -1,15 +1,158 @@
-{% extends "base/base.html" %}
+{% extends 'base/base.html' %}
 
-{% block  content_slidebar%} 
-            {% include 'menu/menu_admin.html' %}         
-            {% block  menu_admin%}{% endblock%}         
-{% endblock %} 
+{% block content_slidebar %}
+  {% include 'menu/menu_admin.html' %}
+  {% block menu_admin %}
+  {% endblock %}
+{% endblock %}
 
-{% block titulo %}Configuracion{% endblock  %}
+{% block titulo %}
+  Configuracion
+{% endblock %}
 
 {% block content_main %}
-<div class="main-content">
-
+  <div class="main-content">
     
-</div>
+    <!-- SECCIÓN DE CATEGORÍAS -->
+    <div>
+      <h1>CATEGORIAS</h1>
+      
+      <!-- Botón para abrir el modal de agregar categoría -->
+      <button id="abrirModalCategoria" class="btn_agregar"><i class="fas fa-plus"></i> Nueva Categoria</button>
+
+      <!-- Modal de agregar o actualizar categoría -->
+      <div id="categoriaModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="titulo_modal_categoria">Nueva Categoria</h2>
+          </div>
+          <div class="modal-body">
+            <form class="form" id="formCategoria" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="id_nombre">Ingresa una categoria</label>
+                {{ formCategoria.nombre }}
+                <input type="hidden" name="categoria_id" id="categoria_id" value="" />
+                <input type="hidden" name="key" value="categoria" />
+              </div>
+              <div class="form-group">
+                <label for="">Acciones</label>
+                <div>
+                  <button type="button" id="cerrarModal" class="btn-cerrar">Cancelar</button>
+                  <button type="submit" class="btn-actualizar btn-actualizarCategoria">Guardar Categoria</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+
+      <!-- Tabla de categorías -->
+      <div class="">
+        <table id="categoria" class="table table-striped display" style="width:100%">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for categoria in categorias %}
+              <tr>
+                <td>{{ categoria.id }}</td>
+                <td>{{ categoria.nombre }}</td>
+                <td>
+                  <div class="iconos-accion">
+                    <!-- Enlace para editar -->
+                    <li class="fas fa-pen-to-square actualizar_categoria" data-categoriaId="{{ categoria.id }}"></li>
+                    <!-- Formulario para eliminar -->
+                    <form class="form_eliminar_categoria" action="{% url 'eliminar_categoria' categoria.id %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="fas fa-trash-can"></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECCIÓN DE DESCUENTOS -->
+    <div>
+      <h1>DESCUENTOS</h1>
+      
+      <!-- Botón para abrir el modal de agregar descuento -->
+      <button id="abrirModalDescuento" class="btn_agregar"><i class="fas fa-plus"></i> Nuevo Descuento</button>
+
+      <!-- Modal de agregar o actualizar descuento -->
+      <div id="descuentoModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="titulo_modal_descuento">Nuevo Descuento</h2>
+          </div>
+          <div class="modal-body">
+            <form class="form" id="formDescuento" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="id_tipo_descuento">Tipo de descuento</label>
+                {{ formDescuento.tipo_descuento }}
+                <input type="hidden" name="descuento_id" id="descuento_id" value="" />
+                <input type="hidden" name="key" value="descuento" />
+              </div>
+              <div class="form-group">
+                <label for="id_desc">Descuento</label>
+                {{ formDescuento.desc }}
+              </div>
+              <div class="form-group">
+                <label for="">Acciones</label>
+                <div>
+                  <button type="button" id="cerrarModal" class="btn-cerrar">Cancelar</button>
+                  <button type="submit" class="btn-actualizar actualizarDescuento">Guardar Descuento</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+
+      <!-- Tabla de descuentos -->
+      <div class="">
+        <table id="descuento" class="table table-striped display" style="width:100%">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tipo de Descuento</th>
+              <th>Valor</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for descuento in descuentos %}
+              <tr>
+                <td>{{ descuento.id }}</td>
+                <td>{{ descuento.tipo_descuento }}</td>
+                <td>{{ descuento.desc }}</td>
+                <td>
+                  <div class="iconos-accion">
+                    <!-- Enlace para editar -->
+                    <li class="fas fa-pen-to-square actualizar_descuento" data-descuentoId="{{ descuento.id }}"></li>
+                    <!-- Formulario para eliminar -->
+                    <form class="form_eliminar_descuento" action="{% url 'eliminar_descuento' descuento.id %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="fas fa-trash-can"></button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 {% endblock %}

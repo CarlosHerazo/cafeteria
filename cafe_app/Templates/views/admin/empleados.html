@@ -1,0 +1,121 @@
+{% extends 'base/base.html' %}
+
+{% block content_slidebar %}
+  {% include 'menu/menu_admin.html' %}
+  {% block menu_admin %}
+
+  {% endblock %}
+{% endblock %}
+
+{% block titulo %}
+  Empleados
+{% endblock %}
+
+{% block content_main %}
+  <div class="main-content">
+    <!-- Botón para abrir el modal de agregar -->
+    <button id="abrirModal" class="btn_agregar"><i class="fas fa-plus"></i> Nuevo Empleado</button>
+
+    <!-- Modal de agregar o actualizar -->
+    <div id="miModal" class="modal">
+      <!-- Contenido del modal -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="titulo_modal_empleado">Nuevo Empleado</h2>
+        </div>
+        <div class="modal-body">
+          <form class="form" id="formEmpleado" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="id_cedula">Cédula</label>
+              {{ form.cedula }}
+            </div>
+            <div class="form-group">
+              <label for="id_nombre">Nombre</label>
+              {{ form.nombre }}
+            </div>
+            <div class="form-group">
+              <label for="id_direccion">Dirección</label>
+              {{ form.direccion }}
+            </div>
+            <div class="form-group">
+              <label for="id_telefono">Teléfono</label>
+              {{ form.telefono }}
+            </div>
+            <div class="form-group">
+              <label for="id_rol">Rol</label>
+              {{ form.rol }}
+            </div>
+            <div class="form-group">
+              <label for="id_cafeteria">Cafetería</label>
+              {{ form.cafeteria }}
+            </div>
+            <div class="form-group">
+              <label for="id_correo">Correo Electrónico</label>
+              {{ form.correo }}
+            </div>
+            <div class="form-group">
+              <label for="id_contrasena">Contraseña</label>
+              {{ form.contrasena }}
+            </div>
+            <div class="form-group">
+              <label for="id_usuario">Nombre de Usuario</label>
+              {{ form.usuario }}
+            </div>
+            <div class="form-group">
+              <label for="">Acciones</label>
+              <div>
+                <button type="button" id="cerrarModal" class="btn-cerrar">Cancelar</button>
+                <button type="submit" class="btn-actualizar">Guardar Empleado</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+
+
+     <!-- Tabla de empleados -->
+  <div class="">
+    <table id="empleados" class="table table-striped display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Cédula</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Rol</th>
+          <th>Cafetería</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for empleado in empleados %}
+          <tr>
+            <td>{{ empleado.cedula }}</td>
+            <td>{{ empleado.nombre }}</td>
+            <td>{{ empleado.direccion }}</td>
+            <td>{{ empleado.telefono }}</td>
+            <td>{{ empleado.rol }}</td>
+            <td>{{ empleado.cafeteria.nombre }}</td>
+            <td>
+              <div class="iconos-accion">
+                <!-- Enlace para editar -->
+                <i class="fas fa-pen-to-square actualizar_empleado" data-id="{{ empleado.cedula }}"></i>
+                <!-- Formulario para eliminar -->
+                <form class="form_eliminar" action="{% url 'eliminar_empleado' empleado.cedula %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="fas fa-trash-can"></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+ 
+{% endblock %}
