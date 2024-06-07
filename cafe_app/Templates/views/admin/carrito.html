@@ -17,8 +17,9 @@
 {% endblock %}
 
 {% block content_main %}
+{% load static %}
   <div class="main-content">
-    <table id="cart-table">
+    <table>
       <thead>
         <tr>
           <th>Producto</th>
@@ -134,4 +135,9 @@
       }
     </script>
   </div>
+{% endblock %}
+{% block content_main_script %}
+  <script type="module" src="{%static 'base_cafe/js/carrito.js'%}"></script>
+  <script type="module" src="{%static 'base_cafe/js/realizar_pedido.js'%}"></script>
+  <script type="module" src="{%static 'base_cafe/js/session_car.js'%}"></script>
 {% endblock %}

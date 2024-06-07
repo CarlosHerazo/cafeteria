@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content_main %}
+{% load static %}
   <div class="main-content">
     
     <!-- SECCIÓN DE CATEGORÍAS -->
@@ -155,4 +156,11 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block content_main_script %}
+<script type="module" src="{%static 'base_cafe/js/modal_configuracion.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/categoria_acciones.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/descuento_acciones.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/sweetalert.js'%}"></script>
 {% endblock %}

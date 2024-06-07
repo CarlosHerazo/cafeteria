@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'cafe_app',
     'login_cafe',
     'admin_app_cafe',
-    'productos'
+    'productos',
+    'recuperacionPass',
 ]
 
 MIDDLEWARE = [

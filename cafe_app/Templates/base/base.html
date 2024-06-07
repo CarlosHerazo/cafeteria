@@ -7,6 +7,7 @@
     <meta name="description" content="plataforma de gestión de operador. Herramientas avanzadas y análisis detallados para optimizar tus procesos. Gestión de operador, eficiencia operativa, análisis de rendimiento, herramientas de gestión, productividad empresarial.">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'base_cafe/img/logo_sena.ico' %}" >
     <link rel="stylesheet" type="text/css" href="{%static 'base_cafe/css/style.css'%}">
     <link rel="stylesheet" type="text/css" href="{%static 'base_cafe/css/cardProductos.css'%}">
     <link rel="stylesheet" type="text/css" href="{%static 'base_cafe/css/formulario.css'%}"> 
@@ -73,28 +74,25 @@
  <!-- Agrega la librería de jQuery -->
  <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
- {% comment %} <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> {% endcomment %}
  <!-- Incluye SweetAlert 2 desde la CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
  <!-- Agrega la librería de DataTables -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-qFOQ9YFAeGj1gDOuUD61g3D+tLDv3u1ECYWqT82WQoaWrOhAY+5mRMTTVsQdWutbA5FORCnkEPEgU0OF8IzGvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
-    <script type="module" src="{%static 'base_cafe/js/datatable.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/modal_inventario.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/modal_configuracion.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/modal_empleado.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/sweetalert.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/filter.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/session_car.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/productos_acciones.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/categoria_acciones.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/descuento_acciones.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/empleado_acciones.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/carrito.js'%}"></script>
-    <script type="module" src="{%static 'base_cafe/js/realizar_pedido.js'%}"></script>
-    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
-    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.bootstrap5.js"></script>
+ <script type="module" src="{%static 'base_cafe/js/datatable.js'%}"></script>
+    <!--SCRIPT ESPECIFICOS-->
+    {% block content_main_script %}
+           
+    {% endblock %}
+    
+    
+    
+    {% comment %} <script type="module" src="{%static 'base_cafe/js/session_car.js'%}"></script> {% endcomment %}
+  
+
+    {% comment %} <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.bootstrap5.js"></script> {% endcomment %}
 </body>
 
 </html>

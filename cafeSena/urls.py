@@ -25,6 +25,7 @@ urlpatterns = [
     path('productos/',include('productos.urls')),
     path('confirm_login/',include('login_cafe.urls')),  
     path('admin_cafe/',include('admin_app_cafe.urls')),  
+    path('recuperacion/',include('recuperacionPass.urls')),  
     path('inicio/',views.inicio), 
     path('cerrar-sesion/',cerrar_sesion, name='cerrar_sesion'),
 ]

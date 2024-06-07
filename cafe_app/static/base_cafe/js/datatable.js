@@ -12,6 +12,8 @@ $(document).ready(function () {
     });
 });
 
+// histoiral
+
 $(document).ready(function () {
     var table = $('#historial').DataTable({
         "columnDefs": [
@@ -25,7 +27,7 @@ $(document).ready(function () {
     });
 });
 
-
+// categoria
 $(document).ready(function () {
     var table = $('#categoria').DataTable({
         "columnDefs": [
@@ -40,6 +42,8 @@ $(document).ready(function () {
 
 });
 
+
+// descuento
 $(document).ready(function () {
     var table = $('#descuento').DataTable({
         "columnDefs": [
@@ -53,6 +57,8 @@ $(document).ready(function () {
     });
 
 });
+
+// empleados
 $(document).ready(function () {
     var table = $('#empleados').DataTable({
         "columnDefs": [

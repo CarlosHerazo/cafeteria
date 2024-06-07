@@ -15,6 +15,7 @@
 
 {% block content_main %}
   <div class="main-content">
+    {% load static %}
     <!-- Botón para abrir el modal de agregar -->
     <button id="abrirModalEmpleado" class="btn_agregar"><i class="fas fa-plus"></i> Nuevo Empleado</button>
 
@@ -118,6 +119,11 @@
     </table>
   </div>
   </div>
-
- 
 {% endblock %}
+
+{% block content_main_script %}
+<script type="module" src="{%static 'base_cafe/js/empleado_acciones.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/modal_empleado.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/sweetalert.js'%}"></script>
+{% endblock %}
+

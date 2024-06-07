@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from cafe_app.models import Usuario, Empleado, Venta, Producto
 from django.db.models import Sum, Count, Case, When, IntegerField
 from django.db.models.functions import ExtractWeekDay
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 
@@ -75,7 +76,6 @@ def inicio(request):
 
 
 
-# cofirmacion de las credenciales
 def confirm_login(request):
     if request.method == "POST":
         correo = request.POST.get("email")
@@ -94,7 +94,7 @@ def confirm_login(request):
         except Usuario.DoesNotExist:
             usuario_bd = None
         if usuario_bd is not None:
-            if pwd_usuario == usuario_bd.contrasena:
+            if check_password(pwd_usuario, usuario_bd.contrasena):
                 # Convertir el objeto Admin a un diccionario
                 usuario_data = model_to_dict(usuario_bd)
                 # Agregar el campo 'rol' al diccionario

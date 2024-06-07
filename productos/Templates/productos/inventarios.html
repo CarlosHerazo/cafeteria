@@ -18,6 +18,7 @@
 {% endblock %}
 
 {% block content_main %}
+  {% load static %}
   <div class="main-content">
     <!-- Botón para abrir el modal de agregar -->
     <button id="abrirModal" class="btn_agregar"><i class="fas fa-plus"></i> Nuevo Producto</button>
@@ -128,4 +129,11 @@
       </table>
     </div>
   </div>
+{% endblock %}
+
+
+{% block content_main_script %}
+<script type="module" src="{%static 'base_cafe/js/modal_inventario.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/productos_acciones.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/sweetalert.js'%}"></script>
 {% endblock %}

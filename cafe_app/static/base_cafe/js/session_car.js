@@ -47,8 +47,8 @@ function updateCartView() {
     const total = cart.reduce((total, producto) => total + parseFloat(parseFloat(producto.cantidad) * parseFloat(producto.precio)), 0);
     cartTotal.textContent = `Total: $${total.toFixed(2)}`;
 
-    // Calcular y actualizar los valores del descuento y total a pagar
-    calcularYActualizarValores();
+    // // Calcular y actualizar los valores del descuento y total a pagar
+    // calcularYActualizarValores();
 }
 
 // Delegación de eventos para agregar producto

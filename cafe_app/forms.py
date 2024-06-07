@@ -1,5 +1,6 @@
 from django import forms
 from .models import Categoria, Descuento, Empleado, Usuario, Cafeteria
+from django.contrib.auth.hashers import make_password
 
 class CategoriaForm(forms.ModelForm):
     class Meta:
@@ -49,6 +50,7 @@ class UsuarioForm(forms.ModelForm):
             'usuario': forms.TextInput(attrs={'class': 'form-control'}),
             'empleado': forms.Select(attrs={'class': 'form-control'}),
         }
+
 
 
 class EmpleadoUsuarioForm(forms.ModelForm):
@@ -104,7 +106,7 @@ class EmpleadoUsuarioForm(forms.ModelForm):
             
             Usuario.objects.create(
                 correo=self.cleaned_data['correo'],
-                contrasena=self.cleaned_data['contrasena'],
+                contrasena=make_password(self.cleaned_data['contrasena']),  # Hashear la contraseña
                 usuario=self.cleaned_data['usuario'],
                 empleado=empleado
             )

@@ -1,6 +1,8 @@
 from django.db import models
 from decimal import Decimal
-
+from django.utils import timezone
+import secrets
+from datetime import timedelta
 # Create your models here.
 
 
@@ -78,3 +80,12 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=90)
     usuario = models.CharField(max_length=90)
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    password_reset_token = models.CharField(max_length=100, blank=True, null=True)
+    password_reset_expiry = models.DateTimeField(blank=True, null=True)
+
+    def generate_password_reset_token(self):
+        token = secrets.token_urlsafe(20)  # Genera un token seguro
+        self.password_reset_token = token
+        self.password_reset_expiry = timezone.now() + timedelta(hours=1)  # Expira en 1 hora
+        self.save()
+        return token
