@@ -16,10 +16,10 @@
 {% block content_main %}
   <div class="main-content">
     <!-- Botón para abrir el modal de agregar -->
-    <button id="abrirModal" class="btn_agregar"><i class="fas fa-plus"></i> Nuevo Empleado</button>
+    <button id="abrirModalEmpleado" class="btn_agregar"><i class="fas fa-plus"></i> Nuevo Empleado</button>
 
     <!-- Modal de agregar o actualizar -->
-    <div id="miModal" class="modal">
+    <div id="empleadoModal" class="modal">
       <!-- Contenido del modal -->
       <div class="modal-content">
         <div class="modal-header">
@@ -68,7 +68,7 @@
               <label for="">Acciones</label>
               <div>
                 <button type="button" id="cerrarModal" class="btn-cerrar">Cancelar</button>
-                <button type="submit" class="btn-actualizar">Guardar Empleado</button>
+                <button type="submit" class="btn-actualizar actualizarEmpleao">Guardar Empleado</button>
               </div>
             </div>
           </form>
@@ -93,20 +93,20 @@
         </tr>
       </thead>
       <tbody>
-        {% for empleado in empleados %}
+        {% for usuario in usuarios %}
           <tr>
-            <td>{{ empleado.cedula }}</td>
-            <td>{{ empleado.nombre }}</td>
-            <td>{{ empleado.direccion }}</td>
-            <td>{{ empleado.telefono }}</td>
-            <td>{{ empleado.rol }}</td>
-            <td>{{ empleado.cafeteria.nombre }}</td>
+            <td>{{ usuario.empleado.cedula }}</td>
+            <td>{{ usuario.empleado.nombre }}</td>
+            <td>{{ usuario.empleado.direccion }}</td>
+            <td>{{ usuario.empleado.telefono }}</td>
+            <td>{{ usuario.empleado.rol }}</td>
+            <td>{{ usuario.empleado.cafeteria.nombre }}</td>
             <td>
               <div class="iconos-accion">
                 <!-- Enlace para editar -->
-                <i class="fas fa-pen-to-square actualizar_empleado" data-id="{{ empleado.cedula }}"></i>
+                <i class="fas fa-pen-to-square actualizar_empleado" data-idEmpleado="{{ usuario.id}}"></i>
                 <!-- Formulario para eliminar -->
-                <form class="form_eliminar" action="{% url 'eliminar_empleado' empleado.cedula %}" method="post">
+                <form class="form_eliminar_empleado" action="{% url 'eliminar_empleado' usuario.id %}" method="post">
                   {% csrf_token %}
                   <button type="submit" class="fas fa-trash-can"></button>
                 </form>

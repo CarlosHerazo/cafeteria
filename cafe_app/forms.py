@@ -50,7 +50,8 @@ class UsuarioForm(forms.ModelForm):
             'empleado': forms.Select(attrs={'class': 'form-control'}),
         }
 
-class EmpleadoUsuarioForm(forms.Form):
+
+class EmpleadoUsuarioForm(forms.ModelForm):
     # Campos del modelo Empleado
     cedula = forms.CharField(label='Cédula', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
     nombre = forms.CharField(label='Nombre', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -61,34 +62,51 @@ class EmpleadoUsuarioForm(forms.Form):
     
     # Campos del modelo Usuario
     correo = forms.EmailField(label='Correo Electrónico', widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    contrasena = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control','autocomplete':'new-password'}))
-    usuario = forms.CharField(label='Nombre de Usuario', max_length=90, widget=forms.TextInput(attrs={'class': 'form-control','autocomplete':'off'}))
+    contrasena = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}))
+    usuario = forms.CharField(label='Nombre de Usuario', max_length=90, widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
+
+    class Meta:
+        model = Empleado
+        fields = ['cedula', 'nombre', 'direccion', 'telefono', 'rol', 'cafeteria']
 
     def save(self, commit=True):
-        # Guardar los datos en ambos modelos
-        cedula = self.cleaned_data['cedula']
-        nombre = self.cleaned_data['nombre']
-        direccion = self.cleaned_data['direccion']
-        telefono = self.cleaned_data['telefono']
-        rol = self.cleaned_data['rol']
-        cafeteria = self.cleaned_data['cafeteria']
+        if self.instance.pk:
+            # Actualización de un empleado existente
+            empleado = super().save(commit=False)
+            empleado.cedula = self.cleaned_data['cedula']
+            empleado.nombre = self.cleaned_data['nombre']
+            empleado.direccion = self.cleaned_data['direccion']
+            empleado.telefono = self.cleaned_data['telefono']
+            empleado.rol = self.cleaned_data['rol']
+            empleado.cafeteria = self.cleaned_data['cafeteria']
 
-        empleado = Empleado.objects.create(
-            cedula=cedula,
-            nombre=nombre,
-            direccion=direccion,
-            telefono=telefono,
-            rol=rol,
-            cafeteria=cafeteria
-        )
+            if commit:
+                empleado.save()
+            
+            # Actualizar el usuario relacionado
+            usuario = empleado.usuario_set.first()
+            usuario.correo = self.cleaned_data['correo']
+            usuario.usuario = self.cleaned_data['usuario']
+            if self.cleaned_data['contrasena']:
+                usuario.contrasena = self.cleaned_data['contrasena']  # Actualiza la contraseña solo si hay una nueva
+            if commit:
+                usuario.save()
+        else:
+            # Creación de un nuevo empleado y usuario
+            empleado = Empleado.objects.create(
+                cedula=self.cleaned_data['cedula'],
+                nombre=self.cleaned_data['nombre'],
+                direccion=self.cleaned_data['direccion'],
+                telefono=self.cleaned_data['telefono'],
+                rol=self.cleaned_data['rol'],
+                cafeteria=self.cleaned_data['cafeteria']
+            )
+            
+            Usuario.objects.create(
+                correo=self.cleaned_data['correo'],
+                contrasena=self.cleaned_data['contrasena'],
+                usuario=self.cleaned_data['usuario'],
+                empleado=empleado
+            )
         
-        correo = self.cleaned_data['correo']
-        contrasena = self.cleaned_data['contrasena']
-        usuario = self.cleaned_data['usuario']
-
-        Usuario.objects.create(
-            correo=correo,
-            contrasena=contrasena,
-            usuario=usuario,
-            empleado=empleado
-        )
+        return empleado

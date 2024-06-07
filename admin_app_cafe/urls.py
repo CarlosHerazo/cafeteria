@@ -9,7 +9,8 @@ urlpatterns = [
     path('configuracion/', views.configuracion, name="admin_configuracion"),   
     path('realizar_pedido/', realizar_pedido  , name='realizarPedido'),
     path('generarFactura/', views.generar_factura, name='generarFactura'),
-    path('eliminarEmpleado/<int:emppleado_id>', views.generar_factura, name='eliminar_empleado'),
+    path('eliminarEmpleado/<int:empleado_id>', views.eliminar_empleado, name='eliminar_empleado'),
+    path('buscarEmpleado/<int:empleado_id>', views.buscar_empleado, name='buscarEmpleado'),
    
     
 ]

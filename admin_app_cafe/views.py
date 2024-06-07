@@ -6,7 +6,7 @@ from xhtml2pdf import pisa
 from django.template.loader import get_template 
 from io import BytesIO
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from cafe_app.models import Producto, Descuento, Venta, DetalleVenta, Categoria, Empleado, Usuario
 from cafe_app.forms import CategoriaForm, DescuentoForm, EmpleadoForm, UsuarioForm, EmpleadoUsuarioForm
 from django.db.models import Sum, Count, F, ExpressionWrapper, DecimalField, Case, When, IntegerField
@@ -221,12 +221,9 @@ def empleados(request):
     if usuario_data:
         usuario = usuario_data['usuario']
         rol_ = usuario_data['rol']
-
-        # Obtener todos los empleados
-        empleados = Empleado.objects.all()
-
+        empleado_id = request.POST.get('cedula')
+        print(request.POST)
         if request.method == 'POST':
-            empleado_id = request.POST.get('empleado_id', "")
             if empleado_id:
                 empleado = get_object_or_404(Empleado, pk=empleado_id)
                 form = EmpleadoUsuarioForm(request.POST, instance=empleado)
@@ -238,9 +235,10 @@ def empleados(request):
                 return redirect('admin_inventarios')
         else:
             form = EmpleadoUsuarioForm()
-
+        
+        empleados = Empleado.objects.all()  # Obtenemos todos los empleados
         context = {
-            "usuario": usuario,
+            "usuarios": Usuario.objects.all(),
             "rol": rol_,
             "form": form,
             "empleados": empleados  # Pasar la lista de empleados al contexto
@@ -248,3 +246,41 @@ def empleados(request):
         return render(request, "views/admin/empleados.html", context)
     else:
         return redirect('login')
+
+def eliminar_empleado(request, empleado_id):
+    # Verificar que la solicitud sea POST
+    if request.method == 'POST':
+        print(request.POST)
+        usuario = get_object_or_404(Usuario, pk=empleado_id)
+        usuario.delete()      
+        return redirect('admin_empleados')
+    else:
+        return redirect('admin_empleados')
+
+
+
+def buscar_empleado(request, empleado_id):
+    # Buscar el descuento en la base de datos
+    if request.method == "GET":
+        try:
+            usuario = Usuario.objects.get(id=empleado_id)
+            # Crear un diccionario con los datos del usuario y del empleado asociado
+            usuario_data = {
+                'id': usuario.id,
+                'correo': usuario.correo,
+                'contrasena': usuario.contrasena,
+                'usuario': usuario.usuario,
+                'empleado_nombre': usuario.empleado.nombre,
+                'empleado_cedula': usuario.empleado.cedula,
+                'empleado_direccion': usuario.empleado.direccion,
+                'empleado_telefono': usuario.empleado.telefono,
+                'empleado_rol': usuario.empleado.rol,
+                'cafeteria_id': usuario.empleado.cafeteria.id,  # ID de la cafetería asociada
+                'cafeteria_nombre': usuario.empleado.cafeteria.nombre  # Nombre de la cafetería
+            }
+
+            # Devolver la respuesta JSON con los datos del descuento
+            return JsonResponse(usuario_data)
+        except Producto.DoesNotExist:
+            # Si el descuento no existe, devolver un JSON con un mensaje de error
+            return JsonResponse({'error': 'El descuento no existe'}, status=404)

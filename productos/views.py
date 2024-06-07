@@ -178,8 +178,6 @@ def realizar_pedido(request):
             producto_nombre = item['nombre']  
             cantidad = item['cantidad']
             precio_unitario = item['precio']  
-            print(cantidad)
-            print(precio_unitario)
             precio_unitario = float(precio_unitario.replace(',', '.'))
             subtotal = float(cantidad) * precio_unitario
             message += f"----- {producto_nombre}: {cantidad} x ${precio_unitario} = ${subtotal}\n ----- "
