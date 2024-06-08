@@ -40,21 +40,7 @@ class Venta(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     desc = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     
-    # def aplicar_descuento(self):
-    #     """
-    #     Aplica un descuento del 5% sobre el total de la venta.
-    #     """
-    #     descuento = self.total * Decimal('0.05')
-    #     total_con_descuento = self.total - descuento
-    #     return total_con_descuento
     
-    # def save(self, *args, **kwargs):
-    #     """
-    #     Sobrescribe el método save para actualizar automáticamente el total con descuento al guardar la venta.
-    #     """
-    #     if self.total:
-    #         self.total = self.aplicar_descuento()  # Aplicar descuento al total
-    #     super().save(*args, **kwargs)  # Llamar al método save original de la superclase
 class Descuento(models.Model):
     tipo_descuento = models.CharField(max_length=90)
     desc = models.DecimalField(max_digits=10, decimal_places=2)

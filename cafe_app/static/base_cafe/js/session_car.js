@@ -79,22 +79,37 @@ document.addEventListener('click', function (event) {
         // valida si el producto está en la sesión
         if (productIndex !== -1) {
             // Si el producto está en el carrito, actualizar su cantidad
-            cart[productIndex].cantidad = parseInt(cart[productIndex].cantidad) + parseInt(productCant);
+            if (parseInt(cart[productIndex].cantidad) < parseInt(productCanMax)) {
+                cart[productIndex].cantidad = parseInt(cart[productIndex].cantidad) + parseInt(productCant);
 
-            // Actualizar el carrito en el localStorage
-            saveCart(cart);
+                // Título del mensaje de confirmación según la cantidad del producto actualizada
+                const titleMessage = parseInt(productCant) === 1 ? `Se agregó ${productCant} unidad` : `Se agregaron ${productCant} unidades más`;
 
-            // Título del mensaje de confirmación según la cantidad del producto actualizada
-            const titleMessage = parseInt(productCant) === 1 ? `Se agregó ${productCant} unidad` : `Se agregaron ${productCant} unidades más`;
+                // Mostrar un mensaje de confirmación
+                Swal.fire({
+                    icon: 'warning',
+                    title: "¡Cantidad actualizada!",
+                    text: titleMessage,
+                    timer: 2500
+                });
+                // Actualizar el carrito en el localStorage
+                saveCart(cart);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: "¡Stock Completo en carrito!",
+                    text: "No puedes agregar mas de este producto al carrito",
+                    timer: 2500
+                });
+            }
 
-            // Mostrar un mensaje de confirmación
-            Swal.fire({
-                icon: 'warning',
-                title: "¡Cantidad actualizada!",
-                text: titleMessage,
-                timer: 2500
-              });
+
+            
+
+
         } else {
+
+
             cart.push(product);
             saveCart(cart);
 
@@ -104,7 +119,7 @@ document.addEventListener('click', function (event) {
                 title: `¡Producto agregado correctamente!`,
                 text: `El producto ${productName} se agregó correctamente.`,
                 timer: 2500
-              });
+            });
         }
 
         // Actualizar la vista del carrito

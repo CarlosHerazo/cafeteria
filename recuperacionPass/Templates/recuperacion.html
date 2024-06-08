@@ -30,11 +30,11 @@
                                         </div>
                                         <h4 class="title"><span class="seccion-title">Recuperar</span> Contraseña</h4>
                                     </div>
-                                    <form id="recuperacionForm" method="post">
+                                    <form id="recuperacionForm"  method="post">
                                         {% csrf_token %}
                                         {{ form.as_p }}
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-block">Recuperar Contraseña</button>
+                                            <button  type="submit"  class="btn btn-block btn-success">Recuperar Contraseña</button>
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">

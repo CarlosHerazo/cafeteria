@@ -261,7 +261,7 @@ footer{
     transition: transform 0.3s ease;
 }
 
-.content_input input{
+.fecha, .content_input input{
     width: 30%;
     padding: 10px;
     border-radius: 5px;
@@ -270,7 +270,10 @@ footer{
     font-size: 16px;
 }
 
-.btn_agregar, .eliminar-producto{
+.fecha{
+    width: 100%;
+}
+.btn_agregar, .eliminar-producto {
     background-color: #00AF00;
     color: #fff;
     border: none;

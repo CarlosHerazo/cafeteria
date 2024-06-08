@@ -11,7 +11,8 @@ from cafe_app.models import Producto, Descuento, Venta, DetalleVenta, Categoria,
 from cafe_app.forms import CategoriaForm, DescuentoForm, EmpleadoForm, UsuarioForm, EmpleadoUsuarioForm
 from django.db.models import Sum, Count, F, ExpressionWrapper, DecimalField, Case, When, IntegerField
 from django.db.models.functions import ExtractWeekDay
-
+import xlsxwriter
+from datetime import datetime
 # Create your views here.
 def index(request):
     usuario_data = request.session.get('usuario')
@@ -196,7 +197,7 @@ def generar_pdf(data):
     html = template.render({'data': data, 'total_compra':venta.total, 'descuento':venta.desc})
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="factura.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="factura".pdf"'
     
     pisa_status = pisa.CreatePDF(html, dest=response)
     if pisa_status.err:
@@ -204,15 +205,72 @@ def generar_pdf(data):
     return response
 
 def generar_excel(data):
-    df = pd.DataFrame(data)
+    # Obtener la fecha desde los datos enviados
+    fecha_reporte_str = data['fechaReporte']
+
+    # Convertir la fecha de cadena de texto a objeto datetime
+    fecha_reporte_obj = datetime.strptime(fecha_reporte_str, '%Y-%m-%d')
+
+    # Formatear la fecha en el formato deseado
+    fecha_reporte = fecha_reporte_obj.strftime('%d-%m-%Y')  # Por ejemplo, '07-06-2024'
+    
+    if not fecha_reporte:
+        return HttpResponse("No se proporcionó una fecha para el reporte", status=400)
+
+    # Convertir la fecha a formato datetime
+    fecha_inicio = pd.to_datetime(fecha_reporte)
+    fecha_fin = fecha_inicio + pd.DateOffset(days=1)  # Sumamos un día para obtener ventas hasta el final del día
+
+    # Obtener todas las ventas realizadas en esa fecha
+    ventas = Venta.objects.filter(fecha__range=[fecha_inicio, fecha_fin])
+
+    # Crear una lista para almacenar los datos de ventas y productos
+    datos = []
+    
+    for venta in ventas:
+        detalles = DetalleVenta.objects.filter(venta=venta).select_related('producto')
+        for detalle in detalles:
+            datos.append({
+                'Fecha': venta.fecha.strftime('%Y-%m-%d %H:%M:%S'),  # Formatear la fecha para mejor legibilidad
+                'Nombre Cliente': venta.nombre_cliente,
+                'Producto': detalle.producto.nombre,
+                'Cantidad': detalle.cantidad,
+                'Precio Unitario': detalle.producto.precio,
+                'Total Venta': venta.total,
+                'Cafeteria': venta.cafeteria.nombre,
+            })
+
+    # Crear un DataFrame con los datos
+    df = pd.DataFrame(datos)
+
+    # Formatear la fecha para usar en el nombre del archivo y la hoja
+    fecha_reporte_formateada = fecha_inicio.strftime('%Y-%m-%d')
+
+    # Crear un archivo Excel
     output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, sheet_name='Factura')
-    writer._save()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet('Factura')
+
+    # Definir los estilos para las celdas
+    bold = workbook.add_format({'bold': True})
+    money_format = workbook.add_format({'num_format': '$#,##0.00'})
+    
+    # Escribir los datos en el archivo Excel
+    for i, col in enumerate(df.columns):
+        worksheet.write(0, i, col, bold)
+        # Ajustar el ancho de las columnas
+        worksheet.set_column(i, i, max(len(col), df[col].astype(str).str.len().max()))
+
+    for i, row in df.iterrows():
+        for j, value in enumerate(row):
+            worksheet.write(i + 1, j, value, money_format if isinstance(value, float) else None)
+
+    workbook.close()
     output.seek(0)
 
+    # Crear la respuesta HTTP con el archivo Excel
     response = HttpResponse(output, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename="factura.xlsx"'
+    response['Content-Disposition'] = f'attachment; filename="factura_{fecha_reporte_formateada}.xlsx"'
     return response
 
     
@@ -241,7 +299,8 @@ def empleados(request):
             "usuarios": Usuario.objects.all(),
             "rol": rol_,
             "form": form,
-            "empleados": empleados  # Pasar la lista de empleados al contexto
+            "empleados": empleados, # Pasar la lista de empleados al contexto
+            "usuario":usuario
         }
         return render(request, "views/admin/empleados.html", context)
     else:
