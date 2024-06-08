@@ -70,7 +70,7 @@ $(document).ready(function () {
     if (categoryId) {
       $.ajax({
         type: 'GET',
-        url: 'filtro/',
+        url: 'http://127.0.0.1:8000/productos/filtro/',
         data: { category_id: categoryId },
         success: function (data) {
           $('#filtered-products').html(data);

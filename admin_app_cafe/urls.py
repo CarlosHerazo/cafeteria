@@ -3,6 +3,7 @@ from admin_app_cafe import views
 from productos.views import realizar_pedido
 urlpatterns = [
     path('index/', views.index, name="index"),
+    path('catalogoProductos/', views.catalogo, name="catalogoProductosClientes"),
     path('carrito/', views.carrito, name="admin_carrito"),
     path('historial/', views.historial, name="admin_historial"),
     path('empleados/', views.empleados, name="admin_empleados"),

@@ -102,17 +102,17 @@ def inventarios(request):
 def filtro(request):
     if request.method == 'GET':
         category_id = request.GET.get('category_id')
-        if category_id:
+        if category_id != "0":
             productos = Producto.objects.filter(categoria_id=category_id)
             for producto in productos:
                 producto.precio_formateado = "${}".format(intcomma(int(producto.precio)))
             return render(request, 'productos/productos_filtrados.html', {'productos': productos})
         else:
-            # Si no se proporciona una categoría, puedes manejar el caso de manera adecuada, por ejemplo, mostrando todos los productos.
+            # Si no se proporciona una categoría, mostramos todos los productos.
             productos = Producto.objects.all()
             for producto in productos:
                 producto.precio_formateado = "${}".format(intcomma(int(producto.precio)))
-            return render(request, 'productos/productos.html', {'productos': productos})
+            return render(request, 'productos/productos_filtrados.html', {'productos': productos})
     else:
         # Si la solicitud no es AJAX o no es de tipo GET, puedes devolver un error o redirigir a otra vista.
         return HttpResponseBadRequest("Bad request")

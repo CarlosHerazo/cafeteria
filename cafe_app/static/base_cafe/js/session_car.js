@@ -78,8 +78,13 @@ document.addEventListener('click', function (event) {
 
         // valida si el producto está en la sesión
         if (productIndex !== -1) {
+            console.log("cantidad Maxima", productCanMax)
+            let comparar = parseInt(cart[productIndex].cantidad) + parseInt(productCant)
+            console.log(parseInt(cart[productIndex].cantidad))
+            console.log(parseInt(productCant))
+            console.log(comparar)
             // Si el producto está en el carrito, actualizar su cantidad
-            if (parseInt(cart[productIndex].cantidad) < parseInt(productCanMax)) {
+            if (productCanMax >= parseInt(cart[productIndex].cantidad) + parseInt(productCant)) {
                 cart[productIndex].cantidad = parseInt(cart[productIndex].cantidad) + parseInt(productCant);
 
                 // Título del mensaje de confirmación según la cantidad del producto actualizada

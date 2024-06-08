@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+
+
+{% block  content_slidebar%}
+
+{% endblock %}
+
+{% block titulo %}
+  Productos
+{% endblock %}
+
+{% block content_main %}
+  {% load static %}
+  <div class="main-content">
+    <div class="container">
+      <select name="category" id="category-select">
+        <option value="0"  selected >Categoría</option>
+        {% for categoria in categorias %}
+          <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+        {% endfor %}
+      </select>
+      <button type="button" class="btn_agregar" id="filter-button"><i class="fas fa-filter"></i>Filtrar</button>
+    </div>
+    <div class="content" id="filtered-products">
+      {% for producto in productos %}
+        <div class="card">
+          <div class="image-left">
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" />
+          </div>
+          <div class="info-raight">
+            <div class="header-card">
+              <h2 class="title-product">{{ producto.nombre }}</h2>
+              <span class="valor">{{ producto.precio_formateado }}</span>
+            </div>
+            <div class="body-card">
+              <div class="descripcion-product">{{ producto.descripcion }}</div>
+              <div class="cantidad-product">
+                <span class="cantidad-product-title">Cantidad:</span>{{ producto.cantidad }}
+              </div>
+              <div class="counter-container">
+                <button class="btn decrement" onclick="decrement({{ producto.id }})">-</button>
+                <span class="counter" id="counter_{{ producto.id }}">1</span>
+                <button class="btn increment" id="increment_{{ producto.id }}" onclick="increment({{ producto.id }}, {{ producto.cantidad }})">+</button>
+              </div>
+              <div class="boton-a">
+                <!-- Agrega un identificador único a cada botón de "Agregar Producto" -->
+                {% if producto.cantidad > 0 %}
+                  <button class="agregar-producto" data-id="{{ producto.id }}" data-nombre="{{ producto.nombre }}" data-precio="{{ producto.precio }}" data-imagen="{{ producto.imagen.url }}" data-cantidadMaxima={{producto.cantidad}}>Agregar Al carrito</button>
+                {% else %}
+                  <button class="congelar-producto" disabled>Agotado</button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <script>
+      // incremento y decremento
+      function increment(productoId, cantidadMaxima) {
+        let counterElement = document.getElementById('counter_' + productoId)
+        let valor = parseInt(counterElement.textContent)
+        if (valor < cantidadMaxima) {
+          valor++
+          counterElement.textContent = valor
+        }
+      }
+      
+      function decrement(productoId) {
+        let counterElement = document.getElementById('counter_' + productoId)
+        let valor = parseInt(counterElement.textContent)
+        if (valor > 1) {
+          valor--
+          counterElement.textContent = valor
+        }
+      }
+    </script>
+  </div>
+{% endblock %}
+
+{% block content_main_script %}
+
+<script type="module" src="{%static 'base_cafe/js/filter.js'%}"></script>
+<script type="module" src="{%static 'base_cafe/js/session_car.js'%}"></script>
+{% endblock %}

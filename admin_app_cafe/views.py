@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import pandas as pd
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from xhtml2pdf import pisa
@@ -8,7 +9,7 @@ from io import BytesIO
 import json
 from django.http import HttpResponse, JsonResponse
 from cafe_app.models import Producto, Descuento, Venta, DetalleVenta, Categoria, Empleado, Usuario
-from cafe_app.forms import CategoriaForm, DescuentoForm, EmpleadoForm, UsuarioForm, EmpleadoUsuarioForm
+from cafe_app.forms import CategoriaForm, DescuentoForm, EmpleadoUsuarioForm
 from django.db.models import Sum, Count, F, ExpressionWrapper, DecimalField, Case, When, IntegerField
 from django.db.models.functions import ExtractWeekDay
 import xlsxwriter
@@ -343,3 +344,21 @@ def buscar_empleado(request, empleado_id):
         except Producto.DoesNotExist:
             # Si el descuento no existe, devolver un JSON con un mensaje de error
             return JsonResponse({'error': 'El descuento no existe'}, status=404)
+        
+
+def catalogo(request):
+    print(request.session.items())
+    usuario_data = request.session.get('usuario')
+    if usuario_data:
+        # datos usuario
+        nombre = usuario_data['usuario']
+        rol_ = usuario_data['rol']       
+        # Obtener todos los productos
+        productos = Producto.objects.all()  # Esto obtiene todos los productos de la base de datos
+        for producto in productos:
+            producto.precio_formateado = "${}".format(intcomma(int(producto.precio)))
+        categorias = Categoria.objects.all()
+        
+        return render(request, "views/admin/catalogo.html", {"usuario": nombre, "rol": rol_, "productos": productos, "categorias":categorias})
+    else:
+        return HttpResponse("No hay sesión")

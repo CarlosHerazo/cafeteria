@@ -124,11 +124,11 @@
       }
       
       // Escuchar cambios en el localStorage para sincronizar entre pestañas
-      window.addEventListener('storage', function (event) {
+      /* window.addEventListener('storage', function (event) {
         if (event.key === 'cart') {
           mostrarProductosEnCarrito()
         }
-      })
+      }) */
       
       function formatNumber(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
