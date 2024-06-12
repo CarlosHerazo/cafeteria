@@ -5,12 +5,13 @@ from cafe_app.models import Usuario, Empleado, Venta, Producto
 from django.db.models import Sum, Count, Case, When, IntegerField
 from django.db.models.functions import ExtractWeekDay
 from django.contrib.auth.hashers import check_password
-
+from cafe_app.decorators import custom_login_required
 # Create your views here.
 
-
+@custom_login_required
 # inicio de la aplicacion 
 def inicio(request):
+    
     usuario_data = request.session.get('usuario')
     if usuario_data:
         usuario = usuario_data['usuario']

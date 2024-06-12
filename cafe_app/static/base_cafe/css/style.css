@@ -349,3 +349,15 @@ footer{
     justify-content: start;
     font-weight: 300;
 }
+
+.child-element {
+    display: none; /* Inicialmente oculto */
+    position: absolute; /* Posicionamos relativo al padre */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrar el elemento */
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 5px;
+}

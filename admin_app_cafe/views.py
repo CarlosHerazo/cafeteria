@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from cafe_app.decorators import custom_login_required
 import pandas as pd
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.views.decorators.csrf import csrf_exempt
@@ -15,6 +16,8 @@ from django.db.models.functions import ExtractWeekDay
 import xlsxwriter
 from datetime import datetime
 # Create your views here.
+
+@custom_login_required
 def index(request):
     usuario_data = request.session.get('usuario')
     if usuario_data:
@@ -80,7 +83,8 @@ def index(request):
     else:
         # Si no hay datos de usuario en la sesión, redirigir 
         return redirect('login')  
-    
+
+@custom_login_required
 def carrito(request):
     print(request.session.items())
     usuario_data = request.session.get('usuario')
@@ -95,7 +99,7 @@ def carrito(request):
         return HttpResponse("No hay sesión")
     
 
-    
+@custom_login_required
 def historial(request):
     usuario_data = request.session.get('usuario')
     if usuario_data:
@@ -117,7 +121,8 @@ def historial(request):
     else:
         return HttpResponse("No hay sesión")
     
-
+    
+@custom_login_required
 def configuracion(request):
     usuario_data = request.session.get('usuario')
     if not usuario_data:
@@ -274,7 +279,8 @@ def generar_excel(data):
     response['Content-Disposition'] = f'attachment; filename="factura_{fecha_reporte_formateada}.xlsx"'
     return response
 
-    
+
+@custom_login_required   
 def empleados(request):
     usuario_data = request.session.get('usuario')
     if usuario_data:
@@ -306,6 +312,7 @@ def empleados(request):
         return render(request, "views/admin/empleados.html", context)
     else:
         return redirect('login')
+
 
 def eliminar_empleado(request, empleado_id):
     # Verificar que la solicitud sea POST
@@ -345,7 +352,7 @@ def buscar_empleado(request, empleado_id):
             # Si el descuento no existe, devolver un JSON con un mensaje de error
             return JsonResponse({'error': 'El descuento no existe'}, status=404)
         
-
+@custom_login_required
 def catalogo(request):
     print(request.session.items())
     usuario_data = request.session.get('usuario')

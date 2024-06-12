@@ -67,6 +67,8 @@
         </main>
         
     </div>
+
+
     <footer>
         <p>Sena regional Bolivar</p>
         <img src="{%static 'base_cafe/img/logo_sena.png'%}" alt="logo_sena">
@@ -85,12 +87,46 @@
            
     {% endblock %}
     
-    
-    
-    {% comment %} <script type="module" src="{%static 'base_cafe/js/session_car.js'%}"></script> {% endcomment %}
-  
+
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '6669b7e6b18a1e2920225cb0' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production', 
+                allowDangerousHTML: true
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
 
 
+
+        const parentElement = document.querySelector('.vfrc-launcher');
+
+        if (parentElement) {
+            // Crear el elemento hijo
+            const childElement = document.createElement('div');
+            childElement.className = 'child-element';
+            childElement.textContent = 'Elemento Hijo';
+
+            // Añadir el elemento hijo al elemento padre
+            parentElement.appendChild(childElement);
+
+            // Agregar los eventos para mostrar/ocultar el elemento hijo
+            parentElement.addEventListener('mouseenter', () => {
+                childElement.style.display = 'block'; // Mostrar el elemento hijo
+            });
+
+            parentElement.addEventListener('mouseleave', () => {
+                childElement.style.display = 'none'; // Ocultar el elemento hijo
+            });
+        }
+
+
+      </script>
 </body>
 
 </html>

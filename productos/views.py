@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from cafe_app.decorators import custom_login_required
 from cafe_app.models import Producto, Categoria, Venta, DetalleVenta, Descuento
 from django.db.models import F
 from django.contrib.humanize.templatetags.humanize import intcomma
@@ -8,6 +9,7 @@ from .forms import ProductoForm
 from django.conf import settings
 from django.core.mail import send_mail
 import json
+
 
 def nuevo_producto(request):
     usuario_data = request.session.get('usuario')
@@ -67,13 +69,13 @@ def buscar_producto(request, producto_id):
         return JsonResponse({'error': 'El producto no existe'}, status=404)
 
 
-
+@custom_login_required
 def producto(request):
     print(request.session.items())
     usuario_data = request.session.get('usuario')
     if usuario_data:
         # datos usuario
-        nombre = usuario_data['usuario']
+        nombre = usuario_data['usuario'] 
         rol_ = usuario_data['rol']       
         # Obtener todos los productos
         productos = Producto.objects.all()  # Esto obtiene todos los productos de la base de datos
@@ -84,7 +86,8 @@ def producto(request):
         return render(request, "productos/productos.html", {"usuario": nombre, "rol": rol_, "productos": productos, "categorias":categorias})
     else:
         return HttpResponse("No hay sesión")
-    
+
+@custom_login_required  
 def inventarios(request):
     print(request.session.items())
     usuario_data = request.session.get('usuario')
@@ -99,6 +102,7 @@ def inventarios(request):
     else:
         return HttpResponse("No hay sesión")
     
+
 def filtro(request):
     if request.method == 'GET':
         category_id = request.GET.get('category_id')
@@ -120,7 +124,7 @@ def filtro(request):
 
 
 
-
+@custom_login_required
 def realizar_pedido(request):
     if request.method == 'POST':
         data = json.loads(request.body)
