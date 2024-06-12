@@ -12,6 +12,4 @@ urlpatterns = [
     path('generarFactura/', views.generar_factura, name='generarFactura'),
     path('eliminarEmpleado/<int:empleado_id>', views.eliminar_empleado, name='eliminar_empleado'),
     path('buscarEmpleado/<int:empleado_id>', views.buscar_empleado, name='buscarEmpleado'),
-   
-    
 ]
