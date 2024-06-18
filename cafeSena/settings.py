@@ -29,7 +29,7 @@ env = environ.Env()
 SECRET_KEY = 'django-insecure-o6o1+i9+6xd+o&h^-tdmsm-cjk-(i9qmw^y=bz)4u5c_1uf+ob'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [".vercel.app"]
 
@@ -48,12 +48,10 @@ INSTALLED_APPS = [
     'admin_app_cafe',
     'productos',
     'recuperacionPass',
-    'example',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-   
+    'django.middleware.security.SecurityMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
