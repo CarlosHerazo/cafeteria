@@ -29,9 +29,9 @@ env = environ.Env()
 SECRET_KEY = 'django-insecure-o6o1+i9+6xd+o&h^-tdmsm-cjk-(i9qmw^y=bz)4u5c_1uf+ob'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1","vercel.app"]
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'admin_app_cafe',
     'productos',
     'recuperacionPass',
+    'example',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = HOST_EMAIL
 EMAIL_HOST_PASSWORD = HOST_PASS
+
+
+# api/settings.py
+WSGI_APPLICATION = 'api.wsgi.app'
+
